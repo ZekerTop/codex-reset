@@ -98,6 +98,31 @@ def check_session():
     return jsonify(result)
 
 
+@app.route("/api/send-invite", methods=["POST"])
+def send_invite():
+    body = request.get_json(silent=True)
+    if not body:
+        return jsonify({"error": "无效请求"}), 400
+    token = body.get("access_token")
+    aid = body.get("account_id")
+    emails = body.get("emails", [])
+    if not token or not aid:
+        return jsonify({"error": "缺少凭据"}), 400
+    if not emails:
+        return jsonify({"error": "请输入至少一个邮箱"}), 400
+
+    try:
+        r = cg("POST", "/wham/referrals/invite", token, aid,
+               json={"referral_key": "codex_referral_persistent_invite", "emails": emails})
+        if r.status_code == 401:
+            return jsonify({"error": "Token 已过期"}), 401
+        if r.status_code >= 400:
+            return jsonify({"error": f"发送失败 ({r.status_code}): {r.text[:300]}"}), r.status_code
+        return jsonify({"result": r.json()})
+    except Exception as e:
+        return jsonify({"error": f"发送失败: {e}"}), 502
+
+
 @app.route("/api/consume-credit", methods=["POST"])
 def consume_credit():
     body = request.get_json(silent=True)

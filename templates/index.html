@@ -135,6 +135,16 @@ function render(d){
   const bt=ok===true?'有资格':ok===false?'无资格':'未知';
   h+=`<div class="cd"><div class="ch"><span class="ct">邀请资格</span><span class="bg ${bc}">${bt}</span></div>${rElig(el)}</div>`;
 
+  // 邀请表单（有资格时显示）
+  if(ok===true){
+    h+=`<div class="cd" id="invCard"><div class="ch"><span class="ct">发送邀请</span></div>
+      <p style="font-size:.8rem;color:var(--td);margin-bottom:.75rem">邀请好友注册，好友接受后你将获得 rate limit reset credit</p>
+      <input id="invEmail" type="text" placeholder="输入好友邮箱，多个用逗号分隔" style="width:100%;background:var(--bg);border:1px solid var(--b);border-radius:var(--rs);color:var(--t);font-family:var(--m);font-size:.8rem;padding:.625rem .875rem;margin-bottom:.75rem">
+      <button class="btn bs bc" onclick="sendInv(this)">发送邀请</button>
+      <div id="invResult" style="margin-top:.75rem;font-size:.8rem;color:var(--td);display:none"></div>
+    </div>`;
+  }
+
   const cr=d.credits?.credits||d.credits||[];
   const ca=Array.isArray(cr)?cr:[];
   h+=`<div class="cd"><div class="ch"><span class="ct">重置额度</span><span class="bg ${ca.length?'bgs':'bgw'}">${ca.length} 个可用</span></div>${ca.length?ca.map(c=>rCred(c)).join(''):'<div class="es">暂无可用额度</div>'}</div>`;
@@ -187,6 +197,29 @@ function rUsage(u){
   if(u.rate_limit_reset_credits)r.push(['可用 Reset Credit',u.rate_limit_reset_credits.available_count??0]);
   if(!r.length)for(const[k,v]of Object.entries(u))if(v!==null&&typeof v!=='object')r.push([k,fmtVal(v)]);
   return r.map(([k,v])=>`<div class="ir"><span class="il">${esc(k)}</span><span class="iv">${esc(fmtVal(v))}</span></div>`).join('');
+}
+
+async function sendInv(btn){
+  if(!sd){ts('请先查询','error');return}
+  const raw=$('#invEmail').value.trim();
+  if(!raw){ts('请输入邮箱','error');return}
+  const emails=raw.split(/[,，\s;；]+/).map(s=>s.trim()).filter(Boolean);
+  if(!emails.length){ts('请输入有效邮箱','error');return}
+  ld(btn,true);btn.textContent='发送中...';
+  try{
+    const d=await api('/api/send-invite',{access_token:sd.token,account_id:sd.aid,emails});
+    const ir=$('#invResult');
+    ir.style.display='block';
+    ir.style.color='var(--su)';
+    ir.textContent=`邀请已发送给 ${emails.join(', ')}`;
+    ts('邀请发送成功！');
+  }catch(e){
+    const ir=$('#invResult');
+    ir.style.display='block';
+    ir.style.color='var(--d)';
+    ir.textContent=e.message;
+    ts('发送失败','error');
+  }finally{ld(btn,false);btn.textContent='发送邀请'}
 }
 
 async function consume(cid,btn){
