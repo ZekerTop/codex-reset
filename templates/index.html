@@ -4,92 +4,967 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Codex 额度重置</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%2310120f'/%3E%3Crect x='10' y='10' width='44' height='44' rx='12' fill='none' stroke='%237ed9b5' stroke-width='3'/%3E%3Ctext x='32' y='39' text-anchor='middle' font-family='Arial,sans-serif' font-size='18' font-weight='700' fill='%237ed9b5'%3ECR%3C/text%3E%3C/svg%3E">
 <style>
-:root{--bg:#0d0d0d;--s:#1a1a1a;--b:#2a2a2a;--ba:#3a3a3a;--t:#e8e8e8;--td:#888;--a:#10a37f;--ah:#1a7a5c;--d:#ef4444;--dd:rgba(239,68,68,.15);--su:#22c55e;--sd:rgba(34,197,94,.15);--w:#f59e0b;--wd:rgba(245,158,11,.15);--r:12px;--rs:8px;--f:-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",system-ui,sans-serif;--m:"SF Mono","Fira Code",monospace}
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-body{font-family:var(--f);background:var(--bg);color:var(--t);line-height:1.6;min-height:100vh;-webkit-font-smoothing:antialiased}
-.c{max-width:640px;margin:0 auto;padding:3rem 1.5rem 4rem}
-header{text-align:center;margin-bottom:2.5rem}
-header h1{font-size:1.75rem;font-weight:600;letter-spacing:-.02em;margin-bottom:.5rem}
-header p{color:var(--td);font-size:.9rem}
-.is{background:var(--s);border:1px solid var(--b);border-radius:var(--r);padding:1.5rem;margin-bottom:1.5rem}
-.is label{display:block;font-size:.85rem;font-weight:500;color:var(--td);margin-bottom:.75rem;text-transform:uppercase;letter-spacing:.05em}
-textarea{width:100%;min-height:140px;background:var(--bg);border:1px solid var(--b);border-radius:var(--rs);color:var(--t);font-family:var(--m);font-size:.8rem;padding:.875rem;resize:vertical;transition:border-color .2s;line-height:1.5}
-textarea:focus{outline:none;border-color:var(--a)}
-textarea::placeholder{color:#555}
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:.5rem;border:none;border-radius:var(--rs);font-family:var(--f);font-size:.9rem;font-weight:500;cursor:pointer;transition:all .15s;padding:.75rem 1.5rem;line-height:1}
-.btn:disabled{opacity:.5;cursor:not-allowed}
-.bp{background:var(--a);color:#fff;width:100%;margin-top:1rem}
-.bp:hover:not(:disabled){background:var(--ah)}
-.bs{padding:.5rem 1rem;font-size:.8rem;border-radius:6px}
-.bc{background:var(--a);color:#fff}
-.bc:hover:not(:disabled){background:var(--ah)}
-.sp{width:16px;height:16px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:sp .6s linear infinite;flex-shrink:0}
-@keyframes sp{to{transform:rotate(360deg)}}
-.r{margin-top:1.5rem}
-.cd{background:var(--s);border:1px solid var(--b);border-radius:var(--r);padding:1.25rem;margin-bottom:1rem;transition:border-color .2s}
-.cd:hover{border-color:var(--ba)}
-.ch{display:flex;align-items:center;justify-content:space-between;margin-bottom:.75rem}
-.ct{font-size:.85rem;font-weight:600;color:var(--td);text-transform:uppercase;letter-spacing:.05em}
-.bg{display:inline-flex;align-items:center;padding:.25rem .625rem;border-radius:100px;font-size:.75rem;font-weight:500}
-.bgs{background:var(--sd);color:var(--su)}
-.bgw{background:var(--wd);color:var(--w)}
-.bgd{background:var(--dd);color:var(--d)}
-.ir{display:flex;justify-content:space-between;align-items:center;padding:.5rem 0;border-bottom:1px solid var(--b)}
-.ir:last-child{border-bottom:none}
-.il{font-size:.85rem;color:var(--td)}
-.iv{font-size:.85rem;font-weight:500;font-family:var(--m)}
-.ci{display:flex;align-items:center;justify-content:space-between;padding:.875rem 1rem;background:var(--bg);border:1px solid var(--b);border-radius:var(--rs);margin-bottom:.5rem;transition:border-color .2s}
-.ci:hover{border-color:var(--ba)}
-.ci:last-child{margin-bottom:0}
-.cinf{display:flex;flex-direction:column;gap:.25rem;min-width:0}
-.cid{font-size:.8rem;font-family:var(--m);color:var(--td);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.cty{font-size:.8rem;color:var(--t);font-weight:500}
-.cst{flex-shrink:0;margin-left:1rem;display:flex;align-items:center;gap:.5rem}
-.tc{position:fixed;top:1.5rem;right:1.5rem;z-index:1000;display:flex;flex-direction:column;gap:.5rem;pointer-events:none}
-.to{background:var(--s);border:1px solid var(--b);border-radius:var(--rs);padding:.75rem 1rem;font-size:.85rem;box-shadow:0 8px 32px rgba(0,0,0,.4);animation:ti .3s ease;pointer-events:auto;max-width:360px;display:flex;align-items:center;gap:.5rem}
-.to.out{animation:to .25s ease forwards}
-.ts{border-left:3px solid var(--su)}
-.te{border-left:3px solid var(--d)}
-@keyframes ti{from{opacity:0;transform:translateX(100%)}to{opacity:1;transform:translateX(0)}}
-@keyframes to{from{opacity:1;transform:translateX(0)}to{opacity:0;transform:translateX(100%)}}
-.eb{background:var(--dd);border:1px solid rgba(239,68,68,.3);border-radius:var(--rs);padding:1rem 1.25rem;margin-top:1rem;font-size:.85rem;color:var(--d);white-space:pre-wrap;word-break:break-all;display:none}
-.es{text-align:center;padding:2rem;color:var(--td);font-size:.9rem}
-.ht{margin-top:1rem;padding:1rem 1.25rem;background:var(--s);border:1px solid var(--b);border-radius:var(--rs);font-size:.8rem;color:var(--td);line-height:1.7}
-.ht code{font-family:var(--m);background:var(--bg);padding:.15rem .4rem;border-radius:4px;font-size:.75rem}
-.ht a{color:var(--a);text-decoration:none}
-.ht a:hover{text-decoration:underline}
-@media(max-width:480px){.c{padding:2rem 1rem 3rem}header h1{font-size:1.5rem}.ci{flex-direction:column;align-items:flex-start;gap:.75rem}.cst{margin-left:0}}
+:root{
+  color-scheme:light;
+  --page:#f7f8f5;
+  --page-soft:#f0f2ed;
+  --surface:#fbfcf8;
+  --surface-strong:#ffffff;
+  --surface-muted:#f1f3ee;
+  --line:#dde2d8;
+  --line-strong:#c3cbbb;
+  --text:#172019;
+  --text-soft:#4f5d53;
+  --text-muted:#738074;
+  --accent:#14795f;
+  --accent-strong:#0b5e47;
+  --accent-soft:#e2f0ea;
+  --danger:#b4232f;
+  --danger-soft:#fde8ea;
+  --success:#087f5b;
+  --success-soft:#dff3eb;
+  --warning:#946200;
+  --warning-soft:#fff1cc;
+  --shadow:0 18px 48px rgba(24,35,26,.08);
+  --radius:18px;
+  --radius-sm:12px;
+  --radius-xs:8px;
+  --font:-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",system-ui,sans-serif;
+  --mono:"SF Mono","JetBrains Mono","Fira Code",ui-monospace,monospace;
+}
+
+@media (prefers-color-scheme: dark){
+  :root{
+    color-scheme:dark;
+    --page:#10120f;
+    --page-soft:#121610;
+    --surface:#161a15;
+    --surface-strong:#1a2018;
+    --surface-muted:#10140f;
+    --line:#2a3028;
+    --line-strong:#3d4639;
+    --text:#eef4ed;
+    --text-soft:#b9c5b9;
+    --text-muted:#839181;
+    --accent:#208b68;
+    --accent-strong:#7ed9b5;
+    --accent-soft:#172b22;
+    --danger:#ff6b78;
+    --danger-soft:#35181d;
+    --success:#5ee0a8;
+    --success-soft:#173528;
+    --warning:#f0b84d;
+    --warning-soft:#332916;
+    --shadow:0 18px 54px rgba(0,0,0,.22);
+  }
+}
+
+html[data-theme="light"]{
+  color-scheme:light;
+  --page:#f7f8f5;
+  --page-soft:#f0f2ed;
+  --surface:#fbfcf8;
+  --surface-strong:#ffffff;
+  --surface-muted:#f1f3ee;
+  --line:#dde2d8;
+  --line-strong:#c3cbbb;
+  --text:#172019;
+  --text-soft:#4f5d53;
+  --text-muted:#738074;
+  --accent:#14795f;
+  --accent-strong:#0b5e47;
+  --accent-soft:#e2f0ea;
+  --danger:#b4232f;
+  --danger-soft:#fde8ea;
+  --success:#087f5b;
+  --success-soft:#dff3eb;
+  --warning:#946200;
+  --warning-soft:#fff1cc;
+  --shadow:0 18px 48px rgba(24,35,26,.08);
+}
+
+html[data-theme="dark"]{
+  color-scheme:dark;
+  --page:#10120f;
+  --page-soft:#121610;
+  --surface:#161a15;
+  --surface-strong:#1a2018;
+  --surface-muted:#10140f;
+  --line:#2a3028;
+  --line-strong:#3d4639;
+  --text:#eef4ed;
+  --text-soft:#b9c5b9;
+  --text-muted:#839181;
+  --accent:#208b68;
+  --accent-strong:#7ed9b5;
+  --accent-soft:#172b22;
+  --danger:#ff6b78;
+  --danger-soft:#35181d;
+  --success:#5ee0a8;
+  --success-soft:#173528;
+  --warning:#f0b84d;
+  --warning-soft:#332916;
+  --shadow:0 18px 54px rgba(0,0,0,.22);
+}
+
+*,*::before,*::after{box-sizing:border-box}
+html{min-height:100%}
+body{
+  margin:0;
+  min-height:100dvh;
+  font-family:var(--font);
+  color:var(--text);
+  background:linear-gradient(180deg,var(--page),var(--page-soft));
+  -webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility;
+}
+
+a{color:var(--accent-strong);text-decoration:none}
+a:hover{text-decoration:underline;text-underline-offset:3px}
+button,input,textarea{font:inherit}
+
+.app-shell{
+  width:min(1120px,calc(100% - 32px));
+  margin:0 auto;
+  padding:28px 0 56px;
+  position:relative;
+}
+.topbar{
+  min-height:68px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:18px;
+  margin-bottom:26px;
+  flex-wrap:wrap;
+}
+.brand{
+  display:flex;
+  align-items:center;
+  gap:14px;
+  min-width:0;
+}
+.brand-mark{
+  width:40px;
+  height:40px;
+  border:1px solid var(--line);
+  border-radius:13px;
+  display:grid;
+  place-items:center;
+  color:var(--accent-strong);
+  background:var(--surface);
+  box-shadow:none;
+  font-family:var(--mono);
+  font-weight:700;
+  letter-spacing:-.06em;
+}
+.brand small{
+  display:block;
+  color:var(--text-muted);
+  font-size:.78rem;
+  margin-bottom:2px;
+}
+.brand strong{
+  display:block;
+  color:var(--text);
+  font-size:1rem;
+  letter-spacing:-.02em;
+}
+.top-link{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-height:40px;
+  border:1px solid var(--line);
+  border-radius:999px;
+  padding:0 16px;
+  color:var(--text-soft);
+  background:rgba(252,253,248,.56);
+  backdrop-filter:blur(16px);
+  -webkit-backdrop-filter:blur(16px);
+  font-size:.88rem;
+  white-space:nowrap;
+}
+.controls{
+  display:flex;
+  align-items:center;
+  justify-content:flex-end;
+  gap:10px;
+  flex-wrap:wrap;
+}
+.segmented{
+  display:inline-flex;
+  align-items:center;
+  min-height:38px;
+  padding:3px;
+  border:1px solid var(--line);
+  border-radius:999px;
+  background:rgba(252,253,248,.56);
+  backdrop-filter:blur(16px);
+  -webkit-backdrop-filter:blur(16px);
+}
+.segmented button{
+  min-width:30px;
+  min-height:30px;
+  border:0;
+  border-radius:999px;
+  padding:0 10px;
+  color:var(--text-muted);
+  background:transparent;
+  cursor:pointer;
+  font-size:.82rem;
+  font-weight:700;
+  line-height:1;
+  white-space:nowrap;
+  transition:background .15s ease,color .15s ease;
+}
+.segmented.icon-set button{
+  display:inline-grid;
+  place-items:center;
+  width:32px;
+  height:32px;
+  padding:0;
+}
+.icon-button{position:relative}
+.segmented button[aria-pressed="true"]{
+  color:var(--surface);
+  background:var(--text);
+}
+.lang-glyph{
+  display:inline-grid;
+  place-items:center;
+  width:18px;
+  height:18px;
+  font-family:var(--mono);
+  font-size:.78rem;
+  font-weight:800;
+  letter-spacing:-.04em;
+}
+.theme-icon{
+  position:relative;
+  display:inline-block;
+  width:18px;
+  height:18px;
+}
+.sun-icon{
+  border:2px solid currentColor;
+  border-radius:50%;
+  transform:scale(.58);
+  box-shadow:
+    0 -14px 0 -7px currentColor,
+    0 14px 0 -7px currentColor,
+    14px 0 0 -7px currentColor,
+    -14px 0 0 -7px currentColor,
+    10px 10px 0 -7px currentColor,
+    -10px 10px 0 -7px currentColor,
+    10px -10px 0 -7px currentColor,
+    -10px -10px 0 -7px currentColor;
+}
+.moon-icon{
+  border-radius:50%;
+  background:currentColor;
+}
+.moon-icon::after{
+  content:"";
+  position:absolute;
+  top:1px;
+  right:-1px;
+  width:15px;
+  height:15px;
+  border-radius:50%;
+  background:var(--surface);
+}
+.segmented button[aria-pressed="true"] .moon-icon::after{background:var(--text)}
+
+.layout{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) 340px;
+  gap:24px;
+  align-items:start;
+}
+.workspace{display:grid;gap:18px;min-width:0}
+.hero{
+  padding:34px 34px 32px;
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  background:var(--surface);
+  box-shadow:var(--shadow);
+  overflow:hidden;
+  position:relative;
+}
+.hero h1{
+  position:relative;
+  margin:0 0 12px;
+  max-width:680px;
+  font-size:clamp(2rem,4vw,3.3rem);
+  line-height:1.04;
+  letter-spacing:-.055em;
+  font-weight:740;
+}
+.hero p{
+  position:relative;
+  margin:0;
+  max-width:54ch;
+  color:var(--text-soft);
+  font-size:1rem;
+  line-height:1.7;
+}
+
+.panel{
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  background:rgba(252,253,248,.78);
+  box-shadow:var(--shadow);
+  overflow:hidden;
+}
+@media (prefers-color-scheme: dark){
+  .top-link,.panel{background:rgba(23,31,25,.78)}
+}
+html[data-theme="light"] .top-link,
+html[data-theme="light"] .segmented,
+html[data-theme="light"] .panel{background:rgba(252,253,248,.78)}
+html[data-theme="dark"] .top-link,
+html[data-theme="dark"] .segmented,
+html[data-theme="dark"] .panel{background:rgba(23,31,25,.78)}
+.panel-body{padding:22px}
+.panel-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:16px;
+  padding:18px 22px;
+  border-bottom:1px solid var(--line);
+  background:var(--surface);
+}
+.panel-title{
+  margin:0;
+  color:var(--text);
+  font-size:.98rem;
+  font-weight:700;
+  letter-spacing:-.01em;
+}
+.panel-note{
+  margin:6px 0 0;
+  color:var(--text-muted);
+  font-size:.83rem;
+}
+.input-area label{
+  display:block;
+  margin-bottom:10px;
+  color:var(--text-soft);
+  font-size:.9rem;
+  font-weight:650;
+}
+textarea{
+  width:100%;
+  min-height:170px;
+  resize:vertical;
+  display:block;
+  border:1px solid var(--line);
+  border-radius:var(--radius-sm);
+  padding:16px;
+  color:var(--text);
+  background:var(--surface-muted);
+  font-family:var(--mono);
+  font-size:.84rem;
+  line-height:1.65;
+  outline:none;
+  transition:border-color .18s ease,box-shadow .18s ease,background .18s ease;
+}
+textarea::placeholder{color:var(--text-muted)}
+textarea:focus{
+  border-color:var(--accent);
+  background:var(--surface-strong);
+  box-shadow:0 0 0 4px rgba(13,139,101,.16);
+}
+.action-row{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:16px;
+  margin-top:14px;
+}
+.shortcut{
+  color:var(--text-muted);
+  font-size:.82rem;
+}
+.privacy-note{
+  margin-top:12px;
+  border:1px solid var(--line);
+  border-radius:var(--radius-sm);
+  padding:10px 12px;
+  color:var(--text-soft);
+  background:var(--surface-muted);
+  font-size:.84rem;
+  line-height:1.55;
+}
+.privacy-note strong{
+  color:var(--text);
+  font-weight:700;
+}
+
+.btn{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  min-height:42px;
+  border:1px solid transparent;
+  border-radius:999px;
+  padding:0 18px;
+  cursor:pointer;
+  font-size:.9rem;
+  font-weight:700;
+  line-height:1;
+  transition:transform .15s ease,background .15s ease,border-color .15s ease,color .15s ease,opacity .15s ease;
+  white-space:nowrap;
+}
+.btn:active{transform:translateY(1px)}
+.btn:disabled{opacity:.55;cursor:not-allowed}
+.btn-primary,.bc{
+  color:#fff;
+  background:var(--accent);
+  border-color:var(--accent);
+}
+.btn-primary:hover:not(:disabled),.bc:hover:not(:disabled){background:var(--accent-strong);border-color:var(--accent-strong);text-decoration:none}
+.btn-secondary{
+  color:var(--text-soft);
+  background:var(--surface);
+  border-color:var(--line);
+}
+.bp{min-width:168px}
+.bs{min-height:34px;padding:0 13px;font-size:.8rem}
+
+.spinner{
+  width:16px;
+  height:16px;
+  border:2px solid rgba(255,255,255,.38);
+  border-top-color:#fff;
+  border-radius:50%;
+  animation:spin .7s linear infinite;
+  flex:0 0 auto;
+}
+@keyframes spin{to{transform:rotate(360deg)}}
+@media (prefers-reduced-motion: reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition-duration:.01ms!important}
+}
+
+.side-panel{
+  position:sticky;
+  top:20px;
+}
+.guide-list{
+  display:grid;
+  gap:12px;
+  margin:0;
+  padding:0;
+  list-style:none;
+}
+.guide-list li{
+  display:grid;
+  grid-template-columns:28px minmax(0,1fr);
+  gap:12px;
+  align-items:start;
+  color:var(--text-soft);
+  font-size:.91rem;
+  line-height:1.55;
+}
+.step-index{
+  display:grid;
+  place-items:center;
+  width:28px;
+  height:28px;
+  border:1px solid var(--line);
+  border-radius:9px;
+  color:var(--accent-strong);
+  background:var(--surface);
+  font-family:var(--mono);
+  font-size:.78rem;
+  font-weight:700;
+}
+.code-link{
+  display:block;
+  margin-top:7px;
+  border:1px solid var(--line);
+  border-radius:10px;
+  padding:7px 9px;
+  color:var(--accent-strong);
+  background:var(--surface-muted);
+  font-family:var(--mono);
+  font-size:.78rem;
+  line-height:1.45;
+  word-break:break-all;
+}
+.inline-code{
+  display:inline;
+  border-radius:6px;
+  padding:2px 5px;
+  color:var(--accent-strong);
+  background:var(--accent-soft);
+  font-family:var(--mono);
+  font-size:.82em;
+  word-break:break-word;
+}
+.side-note{
+  margin-top:18px;
+  padding:14px;
+  border-radius:var(--radius-sm);
+  color:var(--text-soft);
+  background:var(--surface-muted);
+  font-size:.84rem;
+  line-height:1.6;
+}
+
+.error-box{
+  display:none;
+  border:1px solid color-mix(in srgb,var(--danger) 34%,transparent);
+  border-radius:var(--radius-sm);
+  padding:14px 16px;
+  color:var(--danger);
+  background:var(--danger-soft);
+  font-size:.9rem;
+  line-height:1.55;
+  white-space:pre-wrap;
+  word-break:break-word;
+}
+.results{
+  display:none;
+  gap:14px;
+}
+.results[style*="block"]{display:grid!important}
+.result-card{
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  background:var(--surface);
+  overflow:hidden;
+}
+.result-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  padding:16px 18px;
+  border-bottom:1px solid var(--line);
+}
+.result-title{
+  color:var(--text);
+  font-size:.95rem;
+  font-weight:750;
+}
+.badge{
+  display:inline-flex;
+  align-items:center;
+  min-height:28px;
+  border-radius:999px;
+  padding:0 10px;
+  font-size:.78rem;
+  font-weight:720;
+  white-space:nowrap;
+}
+.badge-success,.bgs{color:var(--success);background:var(--success-soft)}
+.badge-warning,.bgw{color:var(--warning);background:var(--warning-soft)}
+.badge-danger,.bgd{color:var(--danger);background:var(--danger-soft)}
+.info-grid{display:grid}
+.info-row{
+  display:grid;
+  grid-template-columns:minmax(120px,.45fr) minmax(0,1fr);
+  gap:18px;
+  padding:13px 18px;
+  border-bottom:1px solid var(--line);
+}
+.info-row:last-child{border-bottom:0}
+.info-label{color:var(--text-muted);font-size:.83rem}
+.info-value{min-width:0;color:var(--text);font-family:var(--mono);font-size:.83rem;word-break:break-word;text-align:right}
+.empty-state{
+  padding:32px 18px;
+  color:var(--text-muted);
+  text-align:center;
+  font-size:.92rem;
+}
+.credit-list{display:grid;gap:10px;padding:14px}
+.credit-item{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:14px;
+  border:1px solid var(--line);
+  border-radius:var(--radius-sm);
+  padding:13px;
+  background:var(--surface-strong);
+}
+.credit-info{display:grid;gap:4px;min-width:0}
+.credit-type{color:var(--text);font-size:.88rem;font-weight:720}
+.credit-id{min-width:0;color:var(--text-muted);font-family:var(--mono);font-size:.78rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.credit-action{display:flex;align-items:center;gap:8px;flex:0 0 auto}
+.invite-form{
+  padding:18px;
+  display:grid;
+  gap:12px;
+}
+.invite-form p{margin:0;color:var(--text-soft);font-size:.88rem;line-height:1.55}
+.field-label{
+  display:block;
+  margin-bottom:8px;
+  color:var(--text-soft);
+  font-size:.86rem;
+  font-weight:650;
+}
+.text-input{
+  width:100%;
+  border:1px solid var(--line);
+  border-radius:var(--radius-sm);
+  padding:12px 13px;
+  color:var(--text);
+  background:var(--surface-muted);
+  font-family:var(--mono);
+  font-size:.84rem;
+  outline:none;
+}
+.text-input:focus{
+  border-color:var(--accent);
+  box-shadow:0 0 0 4px rgba(13,139,101,.16);
+}
+.inline-result{
+  display:none;
+  padding:10px 12px;
+  border-radius:var(--radius-xs);
+  color:var(--text-soft);
+  background:var(--surface-muted);
+  font-size:.84rem;
+}
+
+.toast-stack{
+  position:fixed;
+  top:20px;
+  right:20px;
+  z-index:10;
+  display:grid;
+  gap:10px;
+  width:min(360px,calc(100vw - 32px));
+  pointer-events:none;
+}
+.toast{
+  pointer-events:auto;
+  border:1px solid var(--line);
+  border-radius:var(--radius-sm);
+  padding:12px 14px;
+  color:var(--text);
+  background:var(--surface-strong);
+  box-shadow:var(--shadow);
+  font-size:.88rem;
+  animation:toast-in .22s ease both;
+}
+.toast.success{border-color:color-mix(in srgb,var(--success) 36%,var(--line))}
+.toast.error{border-color:color-mix(in srgb,var(--danger) 36%,var(--line));color:var(--danger)}
+.toast.out{animation:toast-out .18s ease forwards}
+@keyframes toast-in{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:translateY(0)}}
+@keyframes toast-out{from{opacity:1;transform:translateY(0)}to{opacity:0;transform:translateY(-8px)}}
+
+@supports not (color:color-mix(in srgb,white,black)){
+  .error-box{border-color:var(--danger)}
+  .toast.success{border-color:var(--success)}
+  .toast.error{border-color:var(--danger)}
+}
+
+@media (max-width:900px){
+  .layout{grid-template-columns:1fr}
+  .side-panel{position:static}
+}
+@media (max-width:640px){
+  .app-shell{width:min(100% - 24px,1180px);padding-top:14px}
+  .topbar{align-items:flex-start;min-height:auto}
+  .controls{justify-content:flex-start;width:100%}
+  .top-link{display:none}
+  .hero,.panel-body{padding:20px}
+  .hero h1{font-size:2.25rem}
+  .action-row{align-items:stretch;flex-direction:column-reverse}
+  .bp{width:100%;min-width:0}
+  .info-row{grid-template-columns:1fr;gap:5px}
+  .info-value{text-align:left}
+  .credit-item{align-items:stretch;flex-direction:column}
+  .credit-action{justify-content:flex-start}
+}
 </style>
 </head>
 <body>
-<div class="c">
-  <header>
-    <h1>Codex 额度重置</h1>
-    <p>粘贴 ChatGPT session JSON 查询和重置速率限制</p>
+<div class="app-shell">
+  <header class="topbar">
+    <div class="brand">
+      <span class="brand-mark">CR</span>
+      <div>
+        <small data-i18n="localTool">本地运行工具</small>
+        <strong data-i18n="appName">Codex 额度重置</strong>
+      </div>
+    </div>
+    <div class="controls" aria-label="页面设置">
+      <div class="segmented icon-set" role="group" aria-label="Language">
+        <button class="icon-button" type="button" data-lang-toggle="zh" aria-pressed="true" aria-label="中文" title="中文" data-i18n-aria="switchChinese" data-i18n-title="switchChinese"><span class="lang-glyph" aria-hidden="true">中</span></button>
+        <button class="icon-button" type="button" data-lang-toggle="en" aria-pressed="false" aria-label="English" title="English" data-i18n-aria="switchEnglish" data-i18n-title="switchEnglish"><span class="lang-glyph" aria-hidden="true">A</span></button>
+      </div>
+      <div class="segmented icon-set" role="group" aria-label="Theme">
+        <button class="icon-button" type="button" data-theme-toggle="light" aria-pressed="false" aria-label="亮色" title="亮色" data-i18n-aria="lightMode" data-i18n-title="lightMode"><span class="theme-icon sun-icon" aria-hidden="true"></span></button>
+        <button class="icon-button" type="button" data-theme-toggle="dark" aria-pressed="false" aria-label="暗色" title="暗色" data-i18n-aria="darkMode" data-i18n-title="darkMode"><span class="theme-icon moon-icon" aria-hidden="true"></span></button>
+      </div>
+      <a class="top-link" href="https://chatgpt.com" target="_blank" rel="noopener noreferrer" data-i18n="openChatGPT">打开 ChatGPT</a>
+    </div>
   </header>
-  <div class="is">
-    <label for="si">Session JSON</label>
-    <textarea id="si" placeholder='从浏览器 DevTools 复制 https://chatgpt.com/api/auth/session 的响应&#10;&#10;{ "user":{...}, "accessToken":"eyJ...", ... }' spellcheck="false"></textarea>
-    <button class="btn bp" id="qb" onclick="run()"><span id="qt">查询资格</span></button>
-  </div>
-  <div class="eb" id="eb"></div>
-  <div class="r" id="rs" style="display:none"></div>
-  <div class="ht">
-    <strong>如何获取：</strong><br>
-    1. 浏览器登录 <a href="https://chatgpt.com" target="_blank">chatgpt.com</a><br>
-    2. F12 → Network → 访问 <code>https://chatgpt.com/api/auth/session</code><br>
-    3. 复制 Response JSON → 粘贴到上方 → 点「查询资格」
-  </div>
+
+  <main class="layout">
+    <section class="workspace" aria-label="查询工作区">
+      <div class="hero">
+        <h1 data-i18n="heroTitle">Codex 额度控制台</h1>
+        <p data-i18n="heroSubtitle">粘贴 ChatGPT session JSON，查询邀请资格、reset credits 和当前使用状态。</p>
+      </div>
+
+      <section class="panel input-area" aria-labelledby="session-title">
+        <div class="panel-head">
+          <div>
+            <h2 class="panel-title" id="session-title">Session JSON</h2>
+            <p class="panel-note" data-i18n="sessionNote">内容只发送给本地 Flask 服务，由后端转发到 ChatGPT API。</p>
+          </div>
+        </div>
+        <div class="panel-body">
+          <label for="si" data-i18n="inputLabel">粘贴完整响应 JSON</label>
+          <textarea id="si" data-i18n-placeholder="sessionPlaceholder" placeholder='从浏览器 DevTools 复制 https://chatgpt.com/api/auth/session 的响应&#10;&#10;{ "user":{...}, "accessToken":"eyJ...", ... }' spellcheck="false"></textarea>
+          <p class="privacy-note"><strong data-i18n="privacyStrong">不存储你的 Session JSON。</strong> <span data-i18n="privacyText">仅用于当前页面发起的查询和重置请求，不会写入本地文件或数据库。</span></p>
+          <div class="action-row">
+            <span class="shortcut" data-i18n="shortcut">快捷键：⌘ / Ctrl + Enter</span>
+            <button class="btn btn-primary bp" id="qb" onclick="run()"><span id="qt" data-i18n="queryButton">查询资格</span></button>
+          </div>
+        </div>
+      </section>
+
+      <div class="error-box" id="eb" role="alert"></div>
+      <div class="results" id="rs"></div>
+    </section>
+
+    <aside class="panel side-panel" aria-label="使用说明">
+      <div class="panel-head">
+        <div>
+          <h2 class="panel-title" data-i18n="guideTitle">获取 Session</h2>
+          <p class="panel-note" data-i18n="guideNote">按下面三步复制响应内容。</p>
+        </div>
+      </div>
+      <div class="panel-body">
+        <ol class="guide-list">
+          <li>
+            <span class="step-index">1</span>
+            <span><span data-i18n="step1">浏览器登录</span> <a href="https://chatgpt.com" target="_blank" rel="noopener noreferrer">chatgpt.com</a></span>
+          </li>
+          <li>
+            <span class="step-index">2</span>
+            <span><span data-i18n="step2">打开 DevTools 的 Network，访问</span> <a class="code-link" href="https://chatgpt.com/api/auth/session" target="_blank" rel="noopener noreferrer">https://chatgpt.com/api/auth/session</a></span>
+          </li>
+          <li>
+            <span class="step-index">3</span>
+            <span data-i18n="step3">复制 Response JSON，粘贴到左侧输入框后点击查询。</span>
+          </li>
+        </ol>
+        <div class="side-note">
+          <span data-i18n="sideNote">提示：如果查询失败，先确认代理可访问 ChatGPT，再刷新页面重试。</span>
+        </div>
+      </div>
+    </aside>
+  </main>
 </div>
-<div class="tc" id="tc"></div>
+<div class="toast-stack" id="tc"></div>
 <script>
 const $=s=>document.querySelector(s);
 let sd=null;
+let lastResult=null;
+let currentLang=localStorage.getItem('codex-reset-lang')||'zh';
+let currentTheme=localStorage.getItem('codex-reset-theme')||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');
 
-function ld(b,on){b.disabled=on;on?b.insertAdjacentHTML('afterbegin','<span class="sp"></span>'):b.querySelector('.sp')?.remove()}
-function ts(m,t='success'){const c=$('#tc'),e=document.createElement('div');e.className=`to ${t==='success'?'ts':'te'}`;e.textContent=m;c.appendChild(e);setTimeout(()=>{e.classList.add('out');e.addEventListener('animationend',()=>e.remove())},3000)}
+const I18N={
+  zh:{
+    title:'Codex 额度重置',
+    localTool:'本地运行工具',
+    appName:'Codex 额度重置',
+    openChatGPT:'打开 ChatGPT',
+    switchChinese:'切换到中文',
+    switchEnglish:'切换到英文',
+    lightMode:'亮色',
+    darkMode:'暗色',
+    heroTitle:'Codex 额度控制台',
+    heroSubtitle:'粘贴 ChatGPT session JSON，查询邀请资格、reset credits 和当前使用状态。',
+    sessionNote:'内容只发送给本地 Flask 服务，由后端转发到 ChatGPT API。',
+    inputLabel:'粘贴完整响应 JSON',
+    sessionPlaceholder:'从浏览器 DevTools 复制 https://chatgpt.com/api/auth/session 的响应\\n\\n{ \"user\":{...}, \"accessToken\":\"eyJ...\", ... }',
+    privacyStrong:'不存储你的 Session JSON。',
+    privacyText:'仅用于当前页面发起的查询和重置请求，不会写入本地文件或数据库。',
+    shortcut:'快捷键：⌘ / Ctrl + Enter',
+    queryButton:'查询资格',
+    querying:'查询中...',
+    guideTitle:'获取 Session',
+    guideNote:'按下面三步复制响应内容。',
+    step1:'浏览器登录',
+    step2:'打开 DevTools 的 Network，访问',
+    step3:'复制 Response JSON，粘贴到左侧输入框后点击查询。',
+    sideNote:'提示：如果查询失败，先确认代理可访问 ChatGPT，再刷新页面重试。',
+    pasteJson:'请粘贴 session JSON',
+    missingAccessToken:'缺少 accessToken',
+    missingAccount:'缺少 account.id 或 user.id',
+    jsonParseFailed:'JSON 解析失败: ',
+    parseFailed:'解析失败',
+    checkSuccess:'查询成功',
+    checkFailed:'查询失败',
+    inviteEligibility:'邀请资格',
+    eligible:'有资格',
+    notEligible:'无资格',
+    unknown:'未知',
+    inviteTitle:'发送邀请',
+    inviteDesc:'邀请好友注册，好友接受后你将获得 rate limit reset credit。',
+    friendEmail:'好友邮箱',
+    invitePlaceholder:'多个邮箱用逗号分隔',
+    sendInvite:'发送邀请',
+    resetCredits:'重置额度',
+    availableCount:n=>`${n} 个可用`,
+    noCredits:'暂无可用额度',
+    usageStatus:'使用状态',
+    status:'状态',
+    referralKey:'Referral Key',
+    reason:'原因',
+    remainingInvites:'剩余邀请',
+    usedBadge:'已使用',
+    rateLimitReset:'Rate Limit Reset',
+    valueMissing:'-',
+    yes:'是',
+    no:'否',
+    plan:'计划',
+    email:'邮箱',
+    rateLimit:'速率限制',
+    reached:'已达到',
+    normal:'正常',
+    used:'已使用',
+    resetTime:'重置时间',
+    remainingCount:'剩余次数',
+    credits:'Credits',
+    unlimitedCredits:'无限额度',
+    availableResetCredit:'可用 Reset Credit',
+    enterEmail:'请输入邮箱',
+    enterValidEmail:'请输入有效邮箱',
+    sendInviteSending:'发送中...',
+    inviteSent:emails=>`邀请已发送给 ${emails}`,
+    inviteSuccess:'邀请发送成功',
+    sendFailed:'发送失败',
+    processRunning:'处理中...',
+    resetSuccess:'重置成功',
+    resetFailed:'重置失败: ',
+    pleaseCheckFirst:'请先查询'
+  },
+  en:{
+    title:'Codex Reset Credits',
+    localTool:'Local tool',
+    appName:'Codex Reset',
+    openChatGPT:'Open ChatGPT',
+    switchChinese:'Switch to Chinese',
+    switchEnglish:'Switch to English',
+    lightMode:'Light',
+    darkMode:'Dark',
+    heroTitle:'Codex Credits Console',
+    heroSubtitle:'Paste your ChatGPT session JSON to check eligibility, reset credits, and current usage.',
+    sessionNote:'The content is sent only to the local Flask service, then forwarded to the ChatGPT API.',
+    inputLabel:'Paste full response JSON',
+    sessionPlaceholder:'Copy the response from browser DevTools at https://chatgpt.com/api/auth/session\\n\\n{ \"user\":{...}, \"accessToken\":\"eyJ...\", ... }',
+    privacyStrong:'Your Session JSON is not stored.',
+    privacyText:'It is only used for queries and reset requests from this page. It is not written to local files or a database.',
+    shortcut:'Shortcut: ⌘ / Ctrl + Enter',
+    queryButton:'Check eligibility',
+    querying:'Checking...',
+    guideTitle:'Get Session',
+    guideNote:'Copy the response in three steps.',
+    step1:'Sign in at',
+    step2:'Open DevTools Network and visit',
+    step3:'Copy the Response JSON, paste it on the left, then check.',
+    sideNote:'Tip: if the query fails, confirm your proxy can reach ChatGPT, then refresh and try again.',
+    pasteJson:'Please paste session JSON',
+    missingAccessToken:'Missing accessToken',
+    missingAccount:'Missing account.id or user.id',
+    jsonParseFailed:'JSON parse failed: ',
+    parseFailed:'Parse failed',
+    checkSuccess:'Query succeeded',
+    checkFailed:'Query failed',
+    inviteEligibility:'Invite eligibility',
+    eligible:'Eligible',
+    notEligible:'Not eligible',
+    unknown:'Unknown',
+    inviteTitle:'Send invite',
+    inviteDesc:'Invite a friend to sign up. After they accept, you will receive a rate limit reset credit.',
+    friendEmail:'Friend email',
+    invitePlaceholder:'Separate multiple emails with commas',
+    sendInvite:'Send invite',
+    resetCredits:'Reset credits',
+    availableCount:n=>`${n} available`,
+    noCredits:'No available credits',
+    usageStatus:'Usage status',
+    status:'Status',
+    referralKey:'Referral Key',
+    reason:'Reason',
+    remainingInvites:'Remaining invites',
+    usedBadge:'Used',
+    rateLimitReset:'Rate Limit Reset',
+    valueMissing:'-',
+    yes:'Yes',
+    no:'No',
+    plan:'Plan',
+    email:'Email',
+    rateLimit:'Rate limit',
+    reached:'Reached',
+    normal:'Normal',
+    used:'Used',
+    resetTime:'Reset time',
+    remainingCount:'Remaining count',
+    credits:'Credits',
+    unlimitedCredits:'Unlimited credits',
+    availableResetCredit:'Available Reset Credit',
+    enterEmail:'Enter an email',
+    enterValidEmail:'Enter a valid email',
+    sendInviteSending:'Sending...',
+    inviteSent:emails=>`Invite sent to ${emails}`,
+    inviteSuccess:'Invite sent',
+    sendFailed:'Send failed',
+    processRunning:'Processing...',
+    resetSuccess:'Reset succeeded',
+    resetFailed:'Reset failed: ',
+    pleaseCheckFirst:'Please check first'
+  }
+};
+
+if(!I18N[currentLang])currentLang='zh';
+if(!['light','dark'].includes(currentTheme))currentTheme='light';
+
+function t(k,...args){
+  const v=I18N[currentLang]?.[k]??I18N.zh[k]??k;
+  return typeof v==='function'?v(...args):v;
+}
+
+function applyLang(lang,{persist=true}={}){
+  currentLang=lang;
+  document.documentElement.lang=lang==='zh'?'zh-CN':'en';
+  document.title=t('title');
+  document.querySelectorAll('[data-i18n]').forEach(el=>{el.textContent=t(el.dataset.i18n)});
+  document.querySelectorAll('[data-i18n-placeholder]').forEach(el=>{el.placeholder=t(el.dataset.i18nPlaceholder)});
+  document.querySelectorAll('[data-i18n-aria]').forEach(el=>{el.setAttribute('aria-label',t(el.dataset.i18nAria))});
+  document.querySelectorAll('[data-i18n-title]').forEach(el=>{el.title=t(el.dataset.i18nTitle)});
+  document.querySelectorAll('[data-lang-toggle]').forEach(btn=>{btn.setAttribute('aria-pressed',String(btn.dataset.langToggle===lang))});
+  if(!$('#qb')?.disabled)$('#qt').textContent=t('queryButton');
+  if(lastResult)render(lastResult,{remember:false});
+  if(persist)localStorage.setItem('codex-reset-lang',lang);
+}
+
+function applyTheme(theme,{persist=true}={}){
+  currentTheme=theme;
+  document.documentElement.dataset.theme=theme;
+  document.querySelectorAll('[data-theme-toggle]').forEach(btn=>{btn.setAttribute('aria-pressed',String(btn.dataset.themeToggle===theme))});
+  if(persist)localStorage.setItem('codex-reset-theme',theme);
+}
+
+function ld(b,on){b.disabled=on;on?b.insertAdjacentHTML('afterbegin','<span class="spinner"></span>'):b.querySelector('.spinner')?.remove()}
+function ts(m,t='success'){const c=$('#tc'),e=document.createElement('div');e.className=`toast ${t==='success'?'success':'error'}`;e.textContent=m;c.appendChild(e);setTimeout(()=>{e.classList.add('out');e.addEventListener('animationend',()=>e.remove())},3000)}
 function esc(s){const d=document.createElement('div');d.textContent=s;return d.innerHTML}
+function attr(s){return String(s).replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]))}
 function showErr(m){const e=$('#eb');e.textContent=m;e.style.display='block'}
 function hideErr(){$('#eb').style.display='none'}
 
@@ -97,9 +972,9 @@ function parse(raw){
   raw=raw.replace(/^[\ufeff\u200b\u200c\u200d]+/,'').trim();
   if(raw[0]!=='{'){const i=raw.indexOf('{');if(i>=0)raw=raw.slice(i)}
   const d=JSON.parse(raw);
-  if(!d.accessToken)throw new Error('缺少 accessToken');
+  if(!d.accessToken)throw new Error(t('missingAccessToken'));
   const aid=d.account?.id||d.user?.id;
-  if(!aid)throw new Error('缺少 account.id 或 user.id');
+  if(!aid)throw new Error(t('missingAccount'));
   return{token:d.accessToken,aid};
 }
 
@@ -113,126 +988,130 @@ async function api(path,body){
 async function run(){
   hideErr();
   let p;
-  try{p=parse($('#si').value)}catch(e){showErr('JSON 解析失败: '+e.message);ts('解析失败','error');return}
+  try{p=parse($('#si').value)}catch(e){showErr(t('jsonParseFailed')+e.message);ts(t('parseFailed'),'error');return}
   const btn=$('#qb'),t=$('#qt');
-  ld(btn,true);t.textContent='查询中...';
+  ld(btn,true);t.textContent=I18N[currentLang].querying;
   $('#rs').style.display='none';
   try{
     const d=await api('/api/check-session',{session_json:$('#si').value});
     sd={token:d.access_token,aid:d.account_id};
     render(d);
-    ts('查询成功');
+    ts(I18N[currentLang].checkSuccess);
   }catch(e){
-    showErr(e.message);ts('查询失败','error');
-  }finally{ld(btn,false);t.textContent='查询资格'}
+    showErr(e.message);ts(I18N[currentLang].checkFailed,'error');
+  }finally{ld(btn,false);t.textContent=I18N[currentLang].queryButton}
 }
 
-function render(d){
-  const rs=$('#rs');rs.style.display='block';let h='';
+function render(d,{remember=true}={}){
+  if(remember)lastResult=d;
+  const rs=$('#rs');rs.style.display='grid';let h='';
   const el=d.eligibility||{};
   const ok=el.is_eligible??el.eligible??(el.detail?false:null);
-  const bc=ok===true?'bgs':ok===false?'bgd':'bgw';
-  const bt=ok===true?'有资格':ok===false?'无资格':'未知';
-  h+=`<div class="cd"><div class="ch"><span class="ct">邀请资格</span><span class="bg ${bc}">${bt}</span></div>${rElig(el)}</div>`;
+  const bc=ok===true?'badge-success':ok===false?'badge-danger':'badge-warning';
+  const bt=ok===true?t('eligible'):ok===false?t('notEligible'):t('unknown');
+  h+=`<section class="result-card"><div class="result-head"><span class="result-title">${esc(t('inviteEligibility'))}</span><span class="badge ${bc}">${esc(bt)}</span></div>${rElig(el)}</section>`;
 
-  // 邀请表单（有资格时显示）
   if(ok===true){
-    h+=`<div class="cd" id="invCard"><div class="ch"><span class="ct">发送邀请</span></div>
-      <p style="font-size:.8rem;color:var(--td);margin-bottom:.75rem">邀请好友注册，好友接受后你将获得 rate limit reset credit</p>
-      <input id="invEmail" type="text" placeholder="输入好友邮箱，多个用逗号分隔" style="width:100%;background:var(--bg);border:1px solid var(--b);border-radius:var(--rs);color:var(--t);font-family:var(--m);font-size:.8rem;padding:.625rem .875rem;margin-bottom:.75rem">
-      <button class="btn bs bc" onclick="sendInv(this)">发送邀请</button>
-      <div id="invResult" style="margin-top:.75rem;font-size:.8rem;color:var(--td);display:none"></div>
-    </div>`;
+    h+=`<section class="result-card" id="invCard"><div class="result-head"><span class="result-title">${esc(t('inviteTitle'))}</span></div>
+      <div class="invite-form">
+        <p>${esc(t('inviteDesc'))}</p>
+        <div>
+          <label class="field-label" for="invEmail">${esc(t('friendEmail'))}</label>
+          <input id="invEmail" class="text-input" type="text" placeholder="${attr(t('invitePlaceholder'))}">
+        </div>
+        <button class="btn bs bc" onclick="sendInv(this)">${esc(t('sendInvite'))}</button>
+        <div id="invResult" class="inline-result"></div>
+      </div>
+    </section>`;
   }
 
   const cr=d.credits?.credits||d.credits||[];
   const ca=Array.isArray(cr)?cr:[];
-  h+=`<div class="cd"><div class="ch"><span class="ct">重置额度</span><span class="bg ${ca.length?'bgs':'bgw'}">${ca.length} 个可用</span></div>${ca.length?ca.map(c=>rCred(c)).join(''):'<div class="es">暂无可用额度</div>'}</div>`;
+  h+=`<section class="result-card"><div class="result-head"><span class="result-title">${esc(t('resetCredits'))}</span><span class="badge ${ca.length?'badge-success':'badge-warning'}">${esc(t('availableCount',ca.length))}</span></div>${ca.length?`<div class="credit-list">${ca.map(c=>rCred(c)).join('')}</div>`:`<div class="empty-state">${esc(t('noCredits'))}</div>`}</section>`;
 
-  if(d.usage)h+=`<div class="cd"><div class="ch"><span class="ct">使用状态</span></div>${rUsage(d.usage)}</div>`;
+  if(d.usage)h+=`<section class="result-card"><div class="result-head"><span class="result-title">${esc(t('usageStatus'))}</span></div>${rUsage(d.usage)}</section>`;
   rs.innerHTML=h;
 }
 
 function rElig(el){
   const f=[];
-  if(el.detail)f.push(['状态',el.detail]);
-  if(el.referral_key)f.push(['Referral Key',el.referral_key]);
-  if(el.reason)f.push(['原因',el.reason]);
-  if(el.remaining_invites!==undefined)f.push(['剩余邀请',el.remaining_invites]);
+  if(el.detail)f.push([t('status'),el.detail]);
+  if(el.referral_key)f.push([t('referralKey'),el.referral_key]);
+  if(el.reason)f.push([t('reason'),el.reason]);
+  if(el.remaining_invites!==undefined)f.push([t('remainingInvites'),el.remaining_invites]);
   if(!f.length)for(const[k,v]of Object.entries(el))if(typeof v!=='object')f.push([k,String(v)]);
-  return f.map(([k,v])=>`<div class="ir"><span class="il">${esc(k)}</span><span class="iv">${esc(String(v))}</span></div>`).join('');
+  return `<div class="info-grid">${f.map(([k,v])=>`<div class="info-row"><span class="info-label">${esc(k)}</span><span class="info-value">${esc(String(v))}</span></div>`).join('')}</div>`;
 }
 
 function rCred(c){
-  const id=c.credit_id||c.id||'—';
-  const ty=c.type||c.credit_type||'Rate Limit Reset';
+  const id=c.credit_id||c.id||t('valueMissing');
+  const ty=c.type||c.credit_type||t('rateLimitReset');
   const st=c.status||'available';
   const used=st==='consumed'||st==='used';
-  return`<div class="ci" id="c-${esc(id)}"><div class="cinf"><span class="cty">${esc(ty)}</span><span class="cid">${esc(id)}</span></div><div class="cst">${used?'<span class="bg bgw">已使用</span>':`<button class="btn bs bc" onclick="consume('${esc(id)}',this)">重置额度</button>`}</div></div>`;
+  return`<div class="credit-item"><div class="credit-info"><span class="credit-type">${esc(ty)}</span><span class="credit-id">${esc(id)}</span></div><div class="credit-action">${used?`<span class="badge badge-warning">${esc(t('usedBadge'))}</span>`:`<button class="btn bs bc" data-credit-id="${attr(id)}">${esc(t('resetCredits'))}</button>`}</div></div>`;
 }
 
 function fmtVal(v){
-  if(v===null||v===undefined)return '—';
-  if(typeof v==='boolean')return v?'是':'否';
+  if(v===null||v===undefined)return t('valueMissing');
+  if(typeof v==='boolean')return v?t('yes'):t('no');
   if(typeof v==='object')return JSON.stringify(v);
   return String(v);
 }
 function rUsage(u){
   const r=[];
-  if(u.plan_type)r.push(['计划',u.plan_type]);
-  if(u.email)r.push(['邮箱',u.email]);
+  if(u.plan_type)r.push([t('plan'),u.plan_type]);
+  if(u.email)r.push([t('email'),u.email]);
   const rl=u.rate_limit;
   if(rl){
-    r.push(['速率限制',rl.limit_reached?'已达到':'正常']);
-    r.push(['已使用',rl.primary_window?.used_percent+'%']);
+    r.push([t('rateLimit'),rl.limit_reached?t('reached'):t('normal')]);
+    r.push([t('used'),rl.primary_window?.used_percent+'%']);
     const rst=rl.primary_window?.reset_at;
-    if(rst)r.push(['重置时间',new Date(rst*1000).toLocaleString('zh-CN')]);
+    if(rst)r.push([t('resetTime'),new Date(rst*1000).toLocaleString(currentLang==='zh'?'zh-CN':'en-US')]);
   }
-  if(u.rate_limit_remaining!==undefined)r.push(['剩余次数',u.rate_limit_remaining]);
+  if(u.rate_limit_remaining!==undefined)r.push([t('remainingCount'),u.rate_limit_remaining]);
   const cr=u.credits;
   if(cr){
-    r.push(['Credits',cr.has_credits?'有':'无']);
-    if(cr.unlimited)r.push(['无限额度','是']);
+    r.push([t('credits'),cr.has_credits?t('yes'):t('no')]);
+    if(cr.unlimited)r.push([t('unlimitedCredits'),t('yes')]);
   }
-  if(u.rate_limit_reset_credits)r.push(['可用 Reset Credit',u.rate_limit_reset_credits.available_count??0]);
+  if(u.rate_limit_reset_credits)r.push([t('availableResetCredit'),u.rate_limit_reset_credits.available_count??0]);
   if(!r.length)for(const[k,v]of Object.entries(u))if(v!==null&&typeof v!=='object')r.push([k,fmtVal(v)]);
-  return r.map(([k,v])=>`<div class="ir"><span class="il">${esc(k)}</span><span class="iv">${esc(fmtVal(v))}</span></div>`).join('');
+  return `<div class="info-grid">${r.map(([k,v])=>`<div class="info-row"><span class="info-label">${esc(k)}</span><span class="info-value">${esc(fmtVal(v))}</span></div>`).join('')}</div>`;
 }
 
 async function sendInv(btn){
-  if(!sd){ts('请先查询','error');return}
+  if(!sd){ts(t('pleaseCheckFirst'),'error');return}
   const raw=$('#invEmail').value.trim();
-  if(!raw){ts('请输入邮箱','error');return}
+  if(!raw){ts(t('enterEmail'),'error');return}
   const emails=raw.split(/[,，\s;；]+/).map(s=>s.trim()).filter(Boolean);
-  if(!emails.length){ts('请输入有效邮箱','error');return}
-  ld(btn,true);btn.textContent='发送中...';
+  if(!emails.length){ts(t('enterValidEmail'),'error');return}
+  ld(btn,true);btn.textContent=t('sendInviteSending');
   try{
-    const d=await api('/api/send-invite',{access_token:sd.token,account_id:sd.aid,emails});
+    await api('/api/send-invite',{access_token:sd.token,account_id:sd.aid,emails});
     const ir=$('#invResult');
     ir.style.display='block';
-    ir.style.color='var(--su)';
-    ir.textContent=`邀请已发送给 ${emails.join(', ')}`;
-    ts('邀请发送成功！');
+    ir.style.color='var(--success)';
+    ir.textContent=t('inviteSent',emails.join(', '));
+    ts(t('inviteSuccess'));
   }catch(e){
     const ir=$('#invResult');
     ir.style.display='block';
-    ir.style.color='var(--d)';
+    ir.style.color='var(--danger)';
     ir.textContent=e.message;
-    ts('发送失败','error');
-  }finally{ld(btn,false);btn.textContent='发送邀请'}
+    ts(t('sendFailed'),'error');
+  }finally{ld(btn,false);btn.textContent=t('sendInvite')}
 }
 
 async function consume(cid,btn){
-  if(!sd){ts('请先查询','error');return}
-  ld(btn,true);btn.textContent='处理中...';
+  if(!sd){ts(t('pleaseCheckFirst'),'error');return}
+  ld(btn,true);btn.textContent=t('processRunning');
   try{
     await api('/api/consume-credit',{access_token:sd.token,account_id:sd.aid,credit_id:cid});
-    ts('重置成功！');
-    const el=document.getElementById(`c-${CSS.escape(cid)}`);
-    if(el)el.querySelector('.cst').innerHTML='<span class="bg bgw">已使用</span>';
+    ts(t('resetSuccess'));
+    btn.closest('.credit-action').innerHTML=`<span class="badge badge-warning">${esc(t('usedBadge'))}</span>`;
     refresh();
-  }catch(e){ts('重置失败: '+e.message,'error')}
-  finally{ld(btn,false);btn.textContent='重置额度'}
+  }catch(e){ts(t('resetFailed')+e.message,'error')}
+  finally{ld(btn,false);btn.textContent=t('resetCredits')}
 }
 
 async function refresh(){
@@ -240,7 +1119,21 @@ async function refresh(){
   try{const d=await api('/api/check-session',{session_json:JSON.stringify({accessToken:sd.token,account:{id:sd.aid}})});render(d)}catch(_){}
 }
 
+applyTheme(currentTheme,{persist:false});
+applyLang(currentLang,{persist:false});
+
+document.querySelectorAll('[data-lang-toggle]').forEach(btn=>{
+  btn.addEventListener('click',()=>applyLang(btn.dataset.langToggle));
+});
+document.querySelectorAll('[data-theme-toggle]').forEach(btn=>{
+  btn.addEventListener('click',()=>applyTheme(btn.dataset.themeToggle));
+});
 $('#si').addEventListener('keydown',e=>{if((e.metaKey||e.ctrlKey)&&e.key==='Enter'){e.preventDefault();run()}});
+document.addEventListener('click',e=>{
+  const btn=e.target.closest('[data-credit-id]');
+  if(!btn)return;
+  consume(btn.dataset.creditId,btn);
+});
 </script>
 </body>
 </html>
