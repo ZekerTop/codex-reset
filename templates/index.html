@@ -577,6 +577,35 @@ textarea:focus{
 .info-row:last-child{border-bottom:0}
 .info-label{color:var(--text-muted);font-size:.83rem}
 .info-value{min-width:0;color:var(--text);font-family:var(--mono);font-size:.83rem;word-break:break-word;text-align:right}
+.rule-list{
+  display:grid;
+  gap:8px;
+  margin:0;
+  padding:0;
+  list-style:none;
+  text-align:left;
+  font-family:var(--font);
+}
+.rule-list li{
+  border:1px solid var(--line);
+  border-radius:10px;
+  padding:8px 10px;
+  color:var(--text-soft);
+  background:var(--surface-muted);
+  line-height:1.5;
+}
+.rule-pill{
+  display:inline-flex;
+  align-items:center;
+  min-height:26px;
+  border-radius:999px;
+  padding:0 10px;
+  color:var(--accent-strong);
+  background:var(--accent-soft);
+  font-family:var(--mono);
+  font-size:.8rem;
+  font-weight:700;
+}
 .empty-state{
   padding:32px 18px;
   color:var(--text-muted);
@@ -597,6 +626,23 @@ textarea:focus{
 .credit-info{display:grid;gap:4px;min-width:0}
 .credit-type{color:var(--text);font-size:.88rem;font-weight:720}
 .credit-id{min-width:0;color:var(--text-muted);font-family:var(--mono);font-size:.78rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.credit-meta{
+  display:grid;
+  gap:3px;
+  margin-top:4px;
+  color:var(--text-muted);
+  font-size:.76rem;
+  line-height:1.45;
+}
+.credit-meta-row{display:flex;gap:6px;flex-wrap:wrap}
+.credit-meta-label{color:var(--text-soft)}
+.credit-meta-value{font-family:var(--mono)}
+.credit-description{
+  max-width:58ch;
+  color:var(--text-soft);
+  font-size:.8rem;
+  line-height:1.5;
+}
 .credit-action{display:flex;align-items:center;gap:8px;flex:0 0 auto}
 .invite-form{
   padding:18px;
@@ -827,22 +873,47 @@ const I18N={
     referralKey:'Referral Key',
     reason:'原因',
     remainingInvites:'剩余邀请',
+    remainingSendCapacity:'剩余发送邀请',
+    remainingReferrals:'剩余推荐名额',
+    inviteRules:'邀请规则',
+    inviteCycleUsage:'当前周期',
     usedBadge:'已使用',
     rateLimitReset:'Rate Limit Reset',
+    resetType:'重置类型',
+    totalEarned:'累计获得',
+    creditStartTime:'开始时间',
+    creditExpireTime:'过期时间',
+    redeemStartedTime:'开始兑换时间',
+    redeemedTime:'实际使用时间',
+    profileUserId:'Profile User ID',
+    profileImage:'Profile 图片',
+    beijingTime:'北京时间',
+    availableStatus:'可用',
+    consumedStatus:'已消耗',
     valueMissing:'-',
     yes:'是',
     no:'否',
     plan:'计划',
+    accountId:'Account ID',
+    userId:'User ID',
     email:'邮箱',
     rateLimit:'速率限制',
+    fiveHourWindow:'5 小时额度',
+    weeklyWindow:'周额度',
+    usedPercent:'已用百分比',
     reached:'已达到',
     normal:'正常',
     used:'已使用',
     resetTime:'重置时间',
     remainingCount:'剩余次数',
     credits:'Credits',
+    creditBalance:'Credits 余额',
+    cloudMessages:'云端消息约数',
+    localMessages:'本地消息约数',
+    overageLimitReached:'超额限制',
     unlimitedCredits:'无限额度',
     availableResetCredit:'可用 Reset Credit',
+    spendControl:'消费控制',
     enterEmail:'请输入邮箱',
     enterValidEmail:'请输入有效邮箱',
     sendInviteSending:'发送中...',
@@ -903,22 +974,47 @@ const I18N={
     referralKey:'Referral Key',
     reason:'Reason',
     remainingInvites:'Remaining invites',
+    remainingSendCapacity:'Remaining invite sends',
+    remainingReferrals:'Remaining referrals',
+    inviteRules:'Invite rules',
+    inviteCycleUsage:'Current cycle',
     usedBadge:'Used',
     rateLimitReset:'Rate Limit Reset',
+    resetType:'Reset type',
+    totalEarned:'Total earned',
+    creditStartTime:'Start time',
+    creditExpireTime:'Expires at',
+    redeemStartedTime:'Redeem started at',
+    redeemedTime:'Redeemed at',
+    profileUserId:'Profile User ID',
+    profileImage:'Profile image',
+    beijingTime:'Beijing time',
+    availableStatus:'Available',
+    consumedStatus:'Consumed',
     valueMissing:'-',
     yes:'Yes',
     no:'No',
     plan:'Plan',
+    accountId:'Account ID',
+    userId:'User ID',
     email:'Email',
     rateLimit:'Rate limit',
+    fiveHourWindow:'5-hour window',
+    weeklyWindow:'Weekly window',
+    usedPercent:'Used percent',
     reached:'Reached',
     normal:'Normal',
     used:'Used',
     resetTime:'Reset time',
     remainingCount:'Remaining count',
     credits:'Credits',
+    creditBalance:'Credits balance',
+    cloudMessages:'Approx cloud messages',
+    localMessages:'Approx local messages',
+    overageLimitReached:'Overage limit',
     unlimitedCredits:'Unlimited credits',
     availableResetCredit:'Available Reset Credit',
+    spendControl:'Spend control',
     enterEmail:'Enter an email',
     enterValidEmail:'Enter a valid email',
     sendInviteSending:'Sending...',
@@ -1025,11 +1121,18 @@ function render(d,{remember=true}={}){
     </section>`;
   }
 
-  const cr=d.credits?.credits||d.credits||[];
+  const creditBox=d.credits||{};
+  const cr=creditBox.credits||d.credits||[];
   const ca=Array.isArray(cr)?cr:[];
-  h+=`<section class="result-card"><div class="result-head"><span class="result-title">${esc(t('resetCredits'))}</span><span class="badge ${ca.length?'badge-success':'badge-warning'}">${esc(t('availableCount',ca.length))}</span></div>${ca.length?`<div class="credit-list">${ca.map(c=>rCred(c)).join('')}</div>`:`<div class="empty-state">${esc(t('noCredits'))}</div>`}</section>`;
+  const earned=creditBox.total_earned_count;
+  const creditBadge=earned===undefined?t('availableCount',ca.length):`${t('availableCount',ca.length)} / ${t('totalEarned')} ${earned}`;
+  h+=`<section class="result-card"><div class="result-head"><span class="result-title">${esc(t('resetCredits'))}</span><span class="badge ${ca.length?'badge-success':'badge-warning'}">${esc(creditBadge)}</span></div>${ca.length?`<div class="credit-list">${ca.map(c=>rCred(c)).join('')}</div>`:`<div class="empty-state">${esc(t('noCredits'))}</div>`}</section>`;
 
-  if(d.usage)h+=`<section class="result-card"><div class="result-head"><span class="result-title">${esc(t('usageStatus'))}</span></div>${rUsage(d.usage)}</section>`;
+  if(d.usage){
+    const usage={...d.usage};
+    if(d.account_id&&!usage.account_id)usage.account_id=d.account_id;
+    h+=`<section class="result-card"><div class="result-head"><span class="result-title">${esc(t('usageStatus'))}</span></div>${rUsage(usage)}</section>`;
+  }
   rs.innerHTML=h;
 }
 
@@ -1039,16 +1142,69 @@ function rElig(el){
   if(el.referral_key)f.push([t('referralKey'),el.referral_key]);
   if(el.reason)f.push([t('reason'),el.reason]);
   if(el.remaining_invites!==undefined)f.push([t('remainingInvites'),el.remaining_invites]);
+  if(el.remaining_send_capacity!==undefined)f.push([t('remainingSendCapacity'),el.remaining_send_capacity]);
+  if(el.remaining_referrals!==undefined)f.push([t('remainingReferrals'),el.remaining_referrals]);
+  if(Array.isArray(el.rules)&&el.rules.length)f.push([t('inviteRules'),ruleList(el.rules)]);
+  if(Array.isArray(el.time_frame_rules)&&el.time_frame_rules.length){
+    const rules=el.time_frame_rules.map(r=>{
+      const sent=r.invites_sent??0;
+      const total=r.invites_total??r.capacity_type??t('valueMissing');
+      return `<span class="rule-pill">${esc(`${sent}/${total}`)}</span>`;
+    }).join('');
+    f.push([t('inviteCycleUsage'),{html:rules}]);
+  }
   if(!f.length)for(const[k,v]of Object.entries(el))if(typeof v!=='object')f.push([k,String(v)]);
-  return `<div class="info-grid">${f.map(([k,v])=>`<div class="info-row"><span class="info-label">${esc(k)}</span><span class="info-value">${esc(String(v))}</span></div>`).join('')}</div>`;
+  return `<div class="info-grid">${f.map(([k,v])=>`<div class="info-row"><span class="info-label">${esc(k)}</span><span class="info-value">${htmlVal(v)}</span></div>`).join('')}</div>`;
+}
+
+function ruleList(rules){
+  return{html:`<ul class="rule-list">${rules.map(rule=>`<li>${esc(rule)}</li>`).join('')}</ul>`};
+}
+
+function htmlVal(v){
+  if(v&&typeof v==='object'&&typeof v.html==='string')return v.html;
+  return esc(String(v));
 }
 
 function rCred(c){
   const id=c.credit_id||c.id||t('valueMissing');
-  const ty=c.type||c.credit_type||t('rateLimitReset');
+  const ty=c.title||c.type||c.credit_type||t('rateLimitReset');
+  const desc=c.description?`<span class="credit-description">${esc(c.description)}</span>`:'';
   const st=c.status||'available';
   const used=st==='consumed'||st==='used';
-  return`<div class="credit-item"><div class="credit-info"><span class="credit-type">${esc(ty)}</span><span class="credit-id">${esc(id)}</span></div><div class="credit-action">${used?`<span class="badge badge-warning">${esc(t('usedBadge'))}</span>`:`<button class="btn bs bc" data-credit-id="${attr(id)}">${esc(t('resetCredits'))}</button>`}</div></div>`;
+  const statusText=used?t('consumedStatus'):st==='available'?t('availableStatus'):st;
+  const started=c.granted_at||c.starts_at||c.start_at||c.created_at;
+  const expires=c.expires_at||c.expire_at||c.expired_at;
+  const meta=[
+    [t('status'),statusText],
+    [t('resetType'),c.reset_type||t('rateLimitReset')],
+    [t('creditStartTime'),fmtTime(started)],
+    [t('creditExpireTime'),fmtTime(expires)]
+  ];
+  if(c.redeem_started_at)meta.push([t('redeemStartedTime'),fmtTime(c.redeem_started_at)]);
+  if(c.redeemed_at)meta.push([t('redeemedTime'),fmtTime(c.redeemed_at)]);
+  if(c.profile_user_id)meta.push([t('profileUserId'),c.profile_user_id]);
+  if(c.profile_image_url)meta.push([t('profileImage'),c.profile_image_url]);
+  const metaHtml=meta.map(([k,v])=>`<div class="credit-meta-row"><span class="credit-meta-label">${esc(k)}:</span><span class="credit-meta-value">${esc(v)}</span></div>`).join('');
+  return`<div class="credit-item"><div class="credit-info"><span class="credit-type">${esc(ty)}</span>${desc}<span class="credit-id">${esc(id)}</span><div class="credit-meta">${metaHtml}</div></div><div class="credit-action">${used?`<span class="badge badge-warning">${esc(t('usedBadge'))}</span>`:`<button class="btn bs bc" data-credit-id="${attr(id)}">${esc(t('resetCredits'))}</button>`}</div></div>`;
+}
+
+function fmtTime(v){
+  if(!v)return t('valueMissing');
+  const d=typeof v==='number'?new Date(v<1000000000000?v*1000:v):new Date(v);
+  if(Number.isNaN(d.getTime()))return String(v);
+  const locale=currentLang==='zh'?'zh-CN':'en-US';
+  const formatted=new Intl.DateTimeFormat(locale,{
+    timeZone:'Asia/Shanghai',
+    year:'numeric',
+    month:'2-digit',
+    day:'2-digit',
+    hour:'2-digit',
+    minute:'2-digit',
+    second:'2-digit',
+    hour12:false
+  }).format(d);
+  return `${formatted} ${t('beijingTime')}`;
 }
 
 function fmtVal(v){
@@ -1059,24 +1215,36 @@ function fmtVal(v){
 }
 function rUsage(u){
   const r=[];
-  if(u.plan_type)r.push([t('plan'),u.plan_type]);
+  if(u.account_id)r.push([t('accountId'),u.account_id]);
+  if(u.user_id)r.push([t('userId'),u.user_id]);
   if(u.email)r.push([t('email'),u.email]);
+  if(u.plan_type)r.push([t('plan'),u.plan_type]);
   const rl=u.rate_limit;
   if(rl){
     r.push([t('rateLimit'),rl.limit_reached?t('reached'):t('normal')]);
-    r.push([t('used'),rl.primary_window?.used_percent+'%']);
-    const rst=rl.primary_window?.reset_at;
-    if(rst)r.push([t('resetTime'),new Date(rst*1000).toLocaleString(currentLang==='zh'?'zh-CN':'en-US')]);
+    if(rl.primary_window)r.push([t('fiveHourWindow'),fmtWindow(rl.primary_window)]);
+    if(rl.secondary_window)r.push([t('weeklyWindow'),fmtWindow(rl.secondary_window)]);
   }
   if(u.rate_limit_remaining!==undefined)r.push([t('remainingCount'),u.rate_limit_remaining]);
   const cr=u.credits;
   if(cr){
     r.push([t('credits'),cr.has_credits?t('yes'):t('no')]);
+    if(cr.balance!==undefined)r.push([t('creditBalance'),cr.balance]);
+    if(cr.approx_cloud_messages!==undefined)r.push([t('cloudMessages'),cr.approx_cloud_messages]);
+    if(cr.approx_local_messages!==undefined)r.push([t('localMessages'),cr.approx_local_messages]);
     if(cr.unlimited)r.push([t('unlimitedCredits'),t('yes')]);
+    if(cr.overage_limit_reached!==undefined)r.push([t('overageLimitReached'),cr.overage_limit_reached?t('yes'):t('no')]);
   }
   if(u.rate_limit_reset_credits)r.push([t('availableResetCredit'),u.rate_limit_reset_credits.available_count??0]);
+  if(u.spend_control)r.push([t('spendControl'),u.spend_control.reached?t('reached'):t('normal')]);
   if(!r.length)for(const[k,v]of Object.entries(u))if(v!==null&&typeof v!=='object')r.push([k,fmtVal(v)]);
   return `<div class="info-grid">${r.map(([k,v])=>`<div class="info-row"><span class="info-label">${esc(k)}</span><span class="info-value">${esc(fmtVal(v))}</span></div>`).join('')}</div>`;
+}
+
+function fmtWindow(w){
+  const used=w.used_percent===undefined?t('valueMissing'):`${w.used_percent}%`;
+  const reset=w.reset_at?fmtTime(w.reset_at):t('valueMissing');
+  return `${t('usedPercent')} ${used} / ${t('resetTime')} ${reset}`;
 }
 
 async function sendInv(btn){

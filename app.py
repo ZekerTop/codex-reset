@@ -11,6 +11,12 @@ BACKEND_API = "https://chatgpt.com/backend-api"
 PROXIES = {"https": "http://127.0.0.1:10808", "http": "http://127.0.0.1:10808"}
 
 
+@app.after_request
+def no_cache(response):
+    response.headers["Cache-Control"] = "no-store"
+    return response
+
+
 def build_headers(token, account_id):
     return {
         "Authorization": f"Bearer {token}",
